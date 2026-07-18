@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#032489" />
+  <title>EmmyTech SMS Outreach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">E</div>
+      <div>
+        <div class="brand-name"><span>EMMY</span><strong>TECH</strong></div>
+        <div class="brand-subtitle">SMS Outreach</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span id="connectionBadge" class="badge badge-muted">Connecting...</span>
+      <button id="refreshButton" class="button button-secondary">Refresh</button>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero panel">
+      <div>
+        <span class="eyebrow">SPIN WHEEL REACTIVATION</span>
+        <h1>Turn untouched Spin & Win leads into WhatsApp conversations.</h1>
+        <p>
+          This dashboard targets only people who have never been messaged and have never messaged EmmyTech.
+          It prepares personalised SMS records for export; it does not send SMS itself.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <button id="syncLeadsButton" class="button button-primary">Sync Spin Players</button>
+        <button id="openImportButton" class="button button-secondary">Import Old Labels</button>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Campaign statistics">
+      <article class="stat-card">
+        <span>Total Spin Leads</span>
+        <strong id="statTotalLeads">0</strong>
+        <small>Synced from Ambassador database</small>
+      </article>
+      <article class="stat-card stat-highlight">
+        <span>Eligible: Not Messaged</span>
+        <strong id="statEligible">0</strong>
+        <small>Main SMS audience</small>
+      </article>
+      <article class="stat-card">
+        <span>Added to Campaign</span>
+        <strong id="statSelected">0</strong>
+        <small>Prepared for export</small>
+      </article>
+      <article class="stat-card">
+        <span>Link Clicks</span>
+        <strong id="statClicked">0</strong>
+        <small>Opened WhatsApp from SMS</small>
+      </article>
+      <article class="stat-card">
+        <span>WhatsApp Claimed</span>
+        <strong id="statClaimed">0</strong>
+        <small>Confirmed conversations</small>
+      </article>
+      <article class="stat-card">
+        <span>Success Rate</span>
+        <strong id="statSuccess">0%</strong>
+        <small>Claims divided by SMS sent</small>
+      </article>
+    </section>
+
+    <section class="workspace-grid">
+      <article class="panel campaign-panel">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">CAMPAIGN</span>
+            <h2>Campaign setup</h2>
+          </div>
+          <span id="campaignStatus" class="badge badge-muted">No campaign</span>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Campaign name
+            <input id="campaignName" type="text" value="Spin Wheel Comeback - 2 Free Spins" />
+          </label>
+          <label>
+            Campaign key
+            <input id="campaignKey" type="text" value="spin_comeback_2_free_spins_2026" />
+          </label>
+          <label class="full-width">
+            SMS message
+            <textarea id="smsTemplate" rows="5"></textarea>
+          </label>
+        </div>
+
+        <div class="message-analysis">
+          <div>
+            <span>Preview</span>
+            <p id="messagePreview"></p>
+          </div>
+          <div class="message-numbers">
+            <span><strong id="characterCount">0</strong> characters</span>
+            <span><strong id="estimatedParts">1</strong> estimated SMS part</span>
+          </div>
+        </div>
+
+        <div class="inline-actions">
+          <button id="saveCampaignButton" class="button button-primary">Save Campaign</button>
+          <button id="activateCampaignButton" class="button button-secondary" disabled>Activate</button>
+        </div>
+      </article>
+
+      <article class="panel audience-panel">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">AUDIENCE</span>
+            <h2>Build SMS list</h2>
+          </div>
+        </div>
+
+        <div class="audience-rule">
+          <div class="rule-icon">✓</div>
+          <div>
+            <strong>Included automatically</strong>
+            <p>Valid Spin Wheel players labelled “Not Messaged”.</p>
+          </div>
+        </div>
+        <div class="audience-rule rule-excluded">
+          <div class="rule-icon">×</div>
+          <div>
+            <strong>Excluded automatically</strong>
+            <p>Messaged, Messaged Us Before, invalid numbers, duplicates and previous campaign recipients.</p>
+          </div>
+        </div>
+
+        <label>
+          Number to prepare now
+          <input id="audienceLimit" type="number" min="1" max="5000" value="20" />
+        </label>
+
+        <div class="inline-actions stacked-mobile">
+          <button id="buildAudienceButton" class="button button-primary" disabled>Prepare Recipients</button>
+          <button id="exportCsvButton" class="button button-secondary" disabled>Export SMS CSV</button>
+        </div>
+        <p class="helper-text">Start with 20 test contacts. Increase only after the names, links and WhatsApp opening are confirmed.</p>
+      </article>
+    </section>
+
+    <section class="panel leads-panel">
+      <div class="section-heading table-heading">
+        <div>
+          <span class="eyebrow">RECIPIENTS</span>
+          <h2>Campaign tracking</h2>
+        </div>
+        <div class="table-controls">
+          <select id="statusFilter" aria-label="Filter recipient status">
+            <option value="all">All statuses</option>
+            <option value="selected">Selected</option>
+            <option value="exported">Exported</option>
+            <option value="sent">SMS Sent</option>
+            <option value="delivered">Delivered</option>
+            <option value="clicked">Link Clicked</option>
+            <option value="claimed">WhatsApp Claimed</option>
+            <option value="failed">Failed</option>
+          </select>
+          <input id="searchInput" type="search" placeholder="Search name or number" />
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Lead</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Clicks</th>
+              <th>Prepared SMS</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="recipientRows">
+            <tr><td colspan="6" class="empty-state">Create or select a campaign to see recipients.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="importDialog">
+    <form method="dialog" class="dialog-card" id="importForm">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">ONE-TIME IMPORT</span>
+          <h2>Import old WhatsApp labels</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close">×</button>
+      </div>
+      <p>
+        Export the old WhatsApp outreach list as CSV, then upload it here. The file should contain a phone column and a label/status column.
+      </p>
+      <input id="oldLabelsFile" type="file" accept=".csv,text/csv" required />
+      <div id="importPreview" class="import-preview">No file selected.</div>
+      <div class="dialog-actions">
+        <button value="cancel" class="button button-secondary">Cancel</button>
+        <button id="runImportButton" type="button" class="button button-primary" disabled>Import Labels</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
