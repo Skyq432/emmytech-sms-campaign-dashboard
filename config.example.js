@@ -8,12 +8,12 @@ window.EMMYTECH_SMS_CONFIG = {
 
   // Change this after GitHub Pages is enabled for the new repository.
   // Do not add a trailing slash.
-  publicBaseUrl: "https://YOUR-GITHUB-USERNAME.github.io/YOUR-REPOSITORY",
+  publicBaseUrl: "https://go.emmytechnology.com",
 
   // This is the fixed message that opens in WhatsApp.
   whatsappClaimMessage: "Hello EmmyTech, I want to claim my 2 free spins.",
 
   // Current campaign SMS text. Keep {{first_name}} and {{short_link}} unchanged.
   defaultSmsTemplate:
-    "{{first_name}}, you spun the EmmyTech wheel before. It is back with better rewards, and you have 2 FREE SPINS waiting.\n\nMessage us on WhatsApp to claim: {{short_link}}",
+    "You spun our wheel! You're among the lucky few invited to our FREE Laptop Maintenance Training. Join & get certified. Chat: {{short_link}}",
 };

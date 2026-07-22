@@ -93,7 +93,8 @@
   }
 
   function makeTrackingLink(token) {
-    return `${String(config.publicBaseUrl).replace(/\/$/, "")}/claim.html?t=${encodeURIComponent(token)}`;
+    const baseUrl = String(config.publicBaseUrl).replace(/\/$/, "");
+    return `${baseUrl}/${encodeURIComponent(token)}`;
   }
 
   function personaliseMessage(template, firstName, shortLink) {
@@ -118,7 +119,7 @@
 
   function updateMessagePreview() {
     const template = els.smsTemplate.value;
-    const sample = personaliseMessage(template, "David", "emmy.ng/A7K2");
+    const sample = personaliseMessage(template, "David", "https://go.emmytechnology.com/A7K2QZ");
     els.messagePreview.textContent = sample;
     els.characterCount.textContent = sample.length.toLocaleString();
     const parts = estimateSmsParts(sample);
@@ -603,26 +604,30 @@
     }
     setBusy(els.exportCsvButton, true, "Exporting...");
     try {
-      const exportable = state.recipients.filter((recipient) => ["selected", "exported", "failed"].includes(recipient.sms_status));
+      const exportable = state.recipients.filter((recipient) => recipient.sms_status === "selected");
       if (!exportable.length) {
         showToast("There are no unsent recipients to export.", "error");
         return;
       }
 
-      const header = ["first_name", "phone_number", "short_link", "message"];
-      const lines = [header.join(",")];
-      for (const recipient of exportable) {
-        const link = makeTrackingLink(recipient.tracking_token);
-        const message = personaliseMessage(state.campaign.message_template, recipient.first_name, link);
-        lines.push([
-          recipient.first_name || "Hi",
-          recipient.phone_normalized,
-          link,
-          message,
-        ].map(csvEscape).join(","));
-      }
+      const header = ["phone_number", "name", "amount"];
+        const lines = [header.join(",")];
 
-      const filename = `${state.campaign.campaign_key}_${new Date().toISOString().slice(0, 10)}.csv`;
+        for (const recipient of exportable) {
+          const link = makeTrackingLink(recipient.tracking_token);
+          lines.push([
+            recipient.phone_normalized,
+            link,
+            "0.00",
+          ].map(csvEscape).join(","));
+        }
+
+        const exportStamp = new Date()
+          .toISOString()
+          .replace(/[:.]/g, "-")
+          .replace("T", "_")
+          .slice(0, 19);
+        const filename = `kudisms_${state.campaign.campaign_key}_${exportStamp}.csv`;
       downloadText(filename, `\uFEFF${lines.join("\r\n")}`, "text/csv;charset=utf-8");
 
       const ids = exportable.map((recipient) => recipient.id);
@@ -632,7 +637,7 @@
         .in("id", ids);
       if (error) throw error;
 
-      showToast(`${exportable.length.toLocaleString()} personalised SMS records exported.`);
+      showToast(`${exportable.length.toLocaleString()} KudiSMS records exported and marked Exported.`);
       await Promise.all([loadRecipients(), loadStats()]);
     } catch (error) {
       console.error(error);

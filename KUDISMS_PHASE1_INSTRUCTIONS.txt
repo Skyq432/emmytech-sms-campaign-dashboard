@@ -1,0 +1,19 @@
+KUDISMS PHASE 1
+
+Export columns:
+phone_number,name,amount
+
+The unique tracked URL is placed in the name column.
+Set the KudiSMS message to:
+
+You spun our wheel! You're among the lucky few invited to our FREE Laptop Maintenance Training. Join & get certified. Chat: [NAME VARIABLE]
+
+Use KudiSMS's variable picker to insert the Name field instead of typing the brackets manually.
+
+Workflow:
+1. Prepare the exact number of recipients you want.
+2. Click Export KudiSMS CSV.
+3. Only Selected recipients are exported.
+4. Exported recipients are immediately marked Exported.
+5. The next export will contain only newly prepared Selected recipients.
+6. A click on https://go.emmytechnology.com/TOKEN is recorded before WhatsApp opens.

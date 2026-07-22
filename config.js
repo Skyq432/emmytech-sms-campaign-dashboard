@@ -10,13 +10,13 @@ window.EMMYTECH_SMS_CONFIG = {
 
   // Local address for testing.
   // Do not add a trailing slash.
-  publicBaseUrl: "https://skyq432.github.io/emmytech-sms-campaign-dashboard",
+  publicBaseUrl: "https://go.emmytechnology.com",
 
   // This is the fixed message that opens in WhatsApp.
   whatsappClaimMessage:
-    "Hello EmmyTech, I want to claim my 2 free spins.",
+    "Hello EmmyTech, I received the invitation for the FREE Laptop Maintenance Training. I want to join.",
 
   // Current campaign SMS text.
   defaultSmsTemplate:
-    "{{first_name}}, you spun the EmmyTech wheel before. It is back with better rewards, and you have 2 FREE SPINS waiting.\n\nMessage us on WhatsApp to claim: {{short_link}}",
+    "You spun our wheel! You're among the lucky few invited to our FREE Laptop Maintenance Training. Join & get certified. Chat: {{short_link}}",
 };
