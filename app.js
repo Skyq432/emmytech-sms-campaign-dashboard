@@ -841,11 +841,13 @@
       state.recipients || [];
 
 
+    // Exported is a cumulative milestone.
+    // Once a recipient has been included in a downloaded KudiSMS CSV,
+    // they remain counted as Exported even after moving to Sent/Clicked.
     const exported =
       recipients.filter(
         (item) =>
-          effectiveStatus(item) ===
-          "exported"
+          Boolean(item.exported_at)
       ).length;
 
 
@@ -2156,3 +2158,4 @@ Only do this after you have actually sent the KudiSMS batch.`
 
   init();
 })();
+
