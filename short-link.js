@@ -1,24 +1,8 @@
-﻿(async () => {
+(async () => {
   "use strict";
 
   const config =
     window.EMMYTECH_SMS_CONFIG || {};
-
-  const fallback =
-    document.getElementById(
-      "handoffFallback"
-    );
-
-  const fallbackMessage =
-    document.getElementById(
-      "fallbackMessage"
-    );
-
-  const manualLink =
-    document.getElementById(
-      "manualProductLink"
-    );
-
 
   const cleanPath =
     decodeURIComponent(
@@ -29,10 +13,8 @@
         ""
       );
 
-
   const trackingToken =
     cleanPath.split("/")[0] || "";
-
 
   function productUrl() {
     return (
@@ -41,30 +23,20 @@
     );
   }
 
-
-  function showFallback(message) {
-    manualLink.href =
-      productUrl();
-
-    fallbackMessage.textContent =
-      message ||
-      "Open our products and continue shopping.";
-
-    fallback.hidden =
-      false;
+  function continueToProducts() {
+    window.location.replace(
+      productUrl()
+    );
   }
-
 
   if (
     !config.supabaseUrl ||
     !config.supabaseAnonKey ||
     !trackingToken
   ) {
-    showFallback();
-
+    continueToProducts();
     return;
   }
-
 
   try {
     const client =
@@ -79,7 +51,6 @@
         }
       );
 
-
     const {
       data,
       error,
@@ -92,21 +63,17 @@
         }
       );
 
-
     if (error) {
       throw error;
     }
-
 
     const result =
       Array.isArray(data)
         ? data[0]
         : data;
 
-
     const handoffToken =
       result?.handoff_token;
-
 
     if (!handoffToken) {
       throw new Error(
@@ -114,41 +81,31 @@
       );
     }
 
-
     const destination =
       new URL(
         productUrl()
       );
-
 
     destination.searchParams.set(
       "sms_handoff",
       handoffToken
     );
 
-
     destination.searchParams.set(
       "source",
       "cashoff_sms"
     );
 
-
-    // No loading screen.
-    // No customer-facing system message.
-    // Just continue directly to Products.
     window.location.replace(
       destination.toString()
     );
   }
-
   catch (error) {
     console.error(
       "SMS product handoff failed:",
       error
     );
 
-    showFallback(
-      "Your products are still available. Tap below to continue."
-    );
+    continueToProducts();
   }
 })();

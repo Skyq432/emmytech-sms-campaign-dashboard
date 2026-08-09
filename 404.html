@@ -1,12 +1,10 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#ffffff" />
-
   <title>EmmyTech</title>
-
   <style>
     html,
     body {
@@ -14,83 +12,12 @@
       width: 100%;
       min-height: 100%;
       background: #ffffff;
-      font-family: Arial, sans-serif;
-    }
-
-    [hidden] {
-      display: none !important;
-    }
-
-    #handoffFallback {
-      min-height: 100vh;
-      padding: 24px;
-      box-sizing: border-box;
-      display: grid;
-      place-items: center;
-      background: #f7f9fc;
-    }
-
-    .fallback-card {
-      width: min(420px, 100%);
-      padding: 30px;
-      box-sizing: border-box;
-      border: 1px solid #e4e9f2;
-      border-radius: 22px;
-      background: #ffffff;
-      box-shadow: 0 18px 55px rgba(3, 36, 137, 0.10);
-      text-align: center;
-    }
-
-    .fallback-card strong {
-      display: block;
-      margin-bottom: 8px;
-      color: #0b1838;
-      font-size: 22px;
-    }
-
-    .fallback-card p {
-      margin: 0 0 20px;
-      color: #68728a;
-      line-height: 1.55;
-    }
-
-    .fallback-card a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 22px;
-      border-radius: 12px;
-      background: #032489;
-      color: #ffffff;
-      font-weight: 700;
-      text-decoration: none;
     }
   </style>
 </head>
-
 <body>
-
-  <main id="handoffFallback" hidden>
-    <div class="fallback-card">
-      <strong>Continue to EmmyTech</strong>
-
-      <p id="fallbackMessage">
-        Open our products and continue shopping.
-      </p>
-
-      <a
-        id="manualProductLink"
-        href="#"
-      >
-        View Products
-      </a>
-    </div>
-  </main>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js"></script>
   <script src="/short-link.js"></script>
-
 </body>
 </html>
