@@ -1,22 +1,35 @@
-window.EMMYTECH_SMS_CONFIG = {
-  // Use the Ambassador Supabase project values.
-  supabaseUrl: "https://autndhyvgfndaiahonlx.supabase.co",
+﻿window.EMMYTECH_SMS_CONFIG = {
+  // ==========================================================
+  // LOCAL TESTING ENVIRONMENT
+  // ==========================================================
+  // This testing branch talks ONLY to the local Supabase
+  // instance running in Docker.
+  environment: "local-testing",
+
+  supabaseUrl: "http://127.0.0.1:55321",
 
   supabaseAnonKey:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1dG5kaHl2Z2ZuZGFpYWhvbmx4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODcyNDQsImV4cCI6MjA5NTY2MzI0NH0.OOwxenV5Ono5BhP6UtoEo313f9gKrX9vL4trT9ed_Aw",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0",
 
-  // WhatsApp number in international format without + or spaces.
+  // EmmyTech WhatsApp number.
   whatsappNumber: "2348146503700",
 
-  // Local address for testing.
-  // Do not add a trailing slash.
-  publicBaseUrl: "https://go.emmytechnology.com",
+  // Local SMS dashboard.
+  // Unique campaign links will eventually look like:
+  // http://127.0.0.1:5500/abc123
+  publicBaseUrl: "http://127.0.0.1:5500",
 
-  // This is the fixed message that opens in WhatsApp.
+  // Local EmmyTech product website.
+  // We will connect this properly in the next phase.
+  productBaseUrl: "http://127.0.0.1:3000/products",
+
+  // Legacy fallback message.
+  // The new campaign will lead customers to Products,
+  // not directly to WhatsApp.
   whatsappClaimMessage:
-    "Hello EmmyTech, I received the invitation for the FREE Laptop Maintenance Training. I want to join.",
+    "Hello EmmyTech, I want to use my Cash-Off on a product.",
 
-  // Current campaign SMS text.
+  // New campaign default.
   defaultSmsTemplate:
-    "You spun our wheel! You're among the lucky few invited to our FREE Laptop Maintenance Training. Join & get certified. Chat: {{short_link}}",
+    "Your EmmyTech Cash-Off is still available. See products you can use it on today: {{short_link}}",
 };
