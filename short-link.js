@@ -4,14 +4,20 @@
   const config =
     window.EMMYTECH_SMS_CONFIG || {};
 
-  const title =
-    document.getElementById("claimTitle");
+  const fallback =
+    document.getElementById(
+      "handoffFallback"
+    );
 
-  const message =
-    document.getElementById("claimMessage");
+  const fallbackMessage =
+    document.getElementById(
+      "fallbackMessage"
+    );
 
   const manualLink =
-    document.getElementById("manualProductLink");
+    document.getElementById(
+      "manualProductLink"
+    );
 
 
   const cleanPath =
@@ -36,24 +42,16 @@
   }
 
 
-  function showManual(
-    heading,
-    body
-  ) {
-    title.textContent =
-      heading ||
-      "Continue to EmmyTech Products";
-
-    message.textContent =
-      body ||
-      "Tap below to continue to the product catalogue.";
-
+  function showFallback(message) {
     manualLink.href =
       productUrl();
 
-    manualLink.classList.remove(
-      "hidden"
-    );
+    fallbackMessage.textContent =
+      message ||
+      "Open our products and continue shopping.";
+
+    fallback.hidden =
+      false;
   }
 
 
@@ -62,17 +60,13 @@
     !config.supabaseAnonKey ||
     !trackingToken
   ) {
-    showManual(
-      "Open EmmyTech Products",
-      "We could not identify this SMS link automatically."
-    );
+    showFallback();
 
     return;
   }
 
 
   try {
-
     const client =
       window.supabase.createClient(
         config.supabaseUrl,
@@ -84,13 +78,6 @@
           },
         }
       );
-
-
-    title.textContent =
-      "Connecting your Cash-Off…";
-
-    message.textContent =
-      "Please wait while we securely connect your existing EmmyTech account.";
 
 
     const {
@@ -123,7 +110,7 @@
 
     if (!handoffToken) {
       throw new Error(
-        "A secure product handoff could not be created."
+        "Product handoff unavailable."
       );
     }
 
@@ -146,45 +133,22 @@
     );
 
 
-    title.textContent =
-      "Opening your products…";
-
-    message.textContent =
-      "Your Cash-Off account is ready.";
-
-
+    // No loading screen.
+    // No customer-facing system message.
+    // Just continue directly to Products.
     window.location.replace(
       destination.toString()
     );
-
-
-    window.setTimeout(
-      () => {
-        manualLink.href =
-          destination.toString();
-
-        manualLink.classList.remove(
-          "hidden"
-        );
-      },
-      1800
-    );
-
   }
 
   catch (error) {
-
     console.error(
       "SMS product handoff failed:",
       error
     );
 
-
-    showManual(
-      "We could not connect automatically",
-      "You can still open EmmyTech Products below."
+    showFallback(
+      "Your products are still available. Tap below to continue."
     );
-
   }
-
 })();
